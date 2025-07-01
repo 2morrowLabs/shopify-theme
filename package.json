@@ -1,0 +1,24 @@
+{
+  "name": "shopify-theme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:tw": "tailwindcss -i ./assets/_tailwind.input.css -o ./assets/_tailwind.output.css --watch",
+    "dev:shopify": "shopify theme dev -e dev",
+    "dev": "concurrently \"pnpm run dev:tw\" \"pnpm run dev:shopify\"",
+    "build:tw": "tailwindcss -i ./assets/_tailwind.input.css -o ./assets/_tailwind.output.css",
+    "push": "shopify theme push -e dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  }
+}
