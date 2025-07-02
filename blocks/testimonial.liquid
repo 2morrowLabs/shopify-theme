@@ -1,0 +1,177 @@
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+
+<div class="testimonial-block">
+  <div class="testimonial-card content-container">
+    <div class="testimonial-card__content">
+      {%- if block.settings.rating > 0 -%}
+        <div class="testimonial-card__rating">
+          <span
+            class="rating-star"
+            style="
+              --rating: {{ block.settings.rating }};
+              --rating-max: 5;
+              --rating-decimal: 0;
+            "
+            role="img"
+            aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: block.settings.rating, rating_max: 5 }}"
+          ></span>
+        </div>
+      {%- endif -%}
+
+      {%- if block.settings.quote != blank -%}
+        <blockquote class="testimonial-card__quote">
+          {{ block.settings.quote }}
+        </blockquote>
+      {%- endif -%}
+    </div>
+
+    <div class="testimonial-card__customer">
+      <div class="testimonial-card__avatar">
+        {%- if block.settings.customer_image != blank -%}
+          {{
+            block.settings.customer_image
+            | image_url: width: 100
+            | image_tag: widths: '50, 100', sizes: '50px', alt: block.settings.customer_name
+            | escape
+          }}
+        {%- else -%}
+          <svg
+            class="testimonial-card__avatar-placeholder"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="currentColor"/>
+            <path d="M12 14C7.58172 14 4 17.5817 4 22H20C20 17.5817 16.4183 14 12 14Z" fill="currentColor"/>
+          </svg>
+        {%- endif -%}
+      </div>
+
+      <div class="testimonial-card__customer-info">
+        {%- if block.settings.customer_name != blank -%}
+          <h3 class="testimonial-card__customer-name">{{ block.settings.customer_name }}</h3>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .testimonial-block {
+    margin-bottom: 2rem;
+  }
+
+  .testimonial-card {
+    background: var(--gradient-background);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: var(--text-boxes-border-width) solid rgba(var(--color-foreground), var(--text-boxes-border-opacity));
+    box-shadow: var(--text-boxes-shadow-horizontal-offset) var(--text-boxes-shadow-vertical-offset)
+      var(--text-boxes-shadow-blur-radius) rgba(var(--color-shadow), var(--text-boxes-shadow-opacity));
+  }
+
+  .testimonial-card__content {
+    margin-bottom: 2rem;
+  }
+
+  .testimonial-card__rating {
+    margin-bottom: 1rem;
+  }
+
+  .testimonial-card__quote {
+    font-style: italic;
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .testimonial-card__customer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .testimonial-card__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .testimonial-card__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .testimonial-card__avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    color: rgba(var(--color-foreground), 0.4);
+    background: rgba(var(--color-foreground), 0.1);
+    border-radius: 50%;
+    padding: 0.5rem;
+  }
+
+  .testimonial-card__customer-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  @media screen and (max-width: 749px) {
+    .testimonial-card {
+      padding: 1.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Testimonial",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "quote",
+      "default": "<p>Add customer testimonial here. This is a great place to showcase positive reviews about your products or services.</p>",
+      "label": "Quote"
+    },
+    {
+      "type": "range",
+      "id": "rating",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 5,
+      "label": "Rating (stars)",
+      "info": "0 = no stars shown"
+    },
+    {
+      "type": "image_picker",
+      "id": "customer_image",
+      "label": "Customer photo"
+    },
+    {
+      "type": "text",
+      "id": "customer_name",
+      "default": "Customer Name",
+      "label": "Customer name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial",
+      "settings": {
+        "quote": "<p>Amazing product! The quality is exceptional and customer service was very helpful. Highly recommend!</p>",
+        "rating": 5,
+        "customer_name": "John Doe"
+      }
+    }
+  ]
+}
+{% endschema %}
